@@ -32,12 +32,14 @@ const db={};
 db.Sequelize = Sequelize;
 db.sequelize = seq;
 db.category = require('./category.model.js')(seq,Sequelize);
+db.product = require('./product.model.js')(seq,Sequelize);
 
 /**
  * now db object will have 3 attributes
  *  Sequelize
  *  sequelize
  *  category->this is a call to function which returns the schema of Category
+ * product-> this is a call to function which returns the schema of product
  */
 
 module.exports=db;
