@@ -17,19 +17,16 @@ module.exports = (sequelize,Sequelize)=>{
         },
         name:{
             type:Sequelize.STRING,
-            allowsNull:false
+            allowNull:false
         },
         description:{
             type:Sequelize.STRING
         },
         cost:{
             type:Sequelize.INTEGER,
-            allowsNull:false
+            allowNull:false
         }
-    })
-    {
-        tableName: products
-    }
+    });
 
     return product;
 }

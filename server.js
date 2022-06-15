@@ -12,7 +12,10 @@ app.use(bodyParser.json());
  */
 
 const db = require("./models");
-const category = db.category;
+const Category = db.category;
+const Product = db.product;
+
+//Category.hasMany(Product); //This will create foreign kay column categoryId in product table
 
 db.sequelize.sync({force:true})
 .then(()=>{
@@ -31,7 +34,7 @@ function init(){
             description:"This category is releated to Kitchen products"
         }
     ];
-    category.bulkCreate(categories)
+    Category.bulkCreate(categories)
     .then(()=>{
         console.log("category table initialised");
     })
@@ -42,6 +45,7 @@ function init(){
 }
 
 require("./routes/category.routes")(app);
+require("./routes/product.routes")(app);
 
 app.listen(serverConfig.PORT,()=>{
     console.log(`Application started on port no : ${serverConfig.PORT}`);
