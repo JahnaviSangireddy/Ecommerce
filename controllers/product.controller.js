@@ -78,3 +78,97 @@ exports.findAll = (req,res)=>{
         
     })
 }
+
+/**
+ * to get all products based on productId
+ */
+exports.findOne = (req,res)=>{
+
+    let productId = req.params.id;
+    Product.findByPk(productId)
+    .then(product =>{
+        if(!product){
+            return res.status(404).send({
+                message:"Product not found"
+            })
+        }
+        console.log("Successfully fetched products with id: "+productId);
+        res.status(200).send(product);
+    })
+    .catch(err=>{
+        console.log("some error while fetching product based on productId");
+        res.status(500).send({
+            message:"Internal error while fetching product based on productId"
+        })
+    })
+}
+
+//updating product based on Id
+exports.update = (req,res)=>{
+
+    let product ={
+        name:req.body.name,
+        description: req.body.description,
+        cost:req.body.cost
+    }
+
+    let productId = req.params.id;
+
+    Product.update(product,{
+        where:{
+            id:productId
+        }
+    })
+    .then(updatedProduct =>{
+        //Where the updation happened successfuly. 
+        //You need to send the updated row to the table. 
+        //But while fetching that row and sending it to user
+        //there can be a error.
+        console.log("successfully updated product in db");
+        Product.findByPk(productId)
+        .then(product=>{
+            res.status(200).send(product)
+        })
+        .catch(err=>{
+            res.status(500).send({
+                message:"Error while getting updated product"
+            })
+        })
+    })
+    .catch(err=>{
+        console.log("Error in upodating product");
+        res.status(500).send({
+            message:"Internal error while updating the product"
+        })
+    })
+}
+
+/**
+ * deleting product based on id
+ */
+exports.delete = (req,res)=>{
+    let product = {
+        name:req.body.name,
+        description: req.body.description,
+        cost:req.body.cost
+    }
+    let productId= req.params.id;
+
+    Product.destroy({
+        where:{
+            id:productId
+        }
+    })
+    .then(result=>{
+        console.log("successfully deleted the product");
+        res.status(200).send({
+            message:"deleted the product"
+        })
+    })
+    .catch(err=>{
+        console.log("Error while deleting the product");
+        res.status(500).send({
+            message:"Could not delete the product"
+        })
+    })
+}
