@@ -5,32 +5,19 @@
 
 const db = require("../models");
 const Product = db.product;
+const op = db.Sequelize.Op;
 
 /**
  * logic to add a new product to db
  */
 
 exports.create = (req,res)=>{
-    if(!req.body.name){
-        console.log("product name is empty");
-        res.status(400).send({
-            message:"The name of product can't be empty"
-        })
-        return;
-    }
-
-    if(!req.body.cost){
-        console.log("product cost is empty");
-        res.status(400).send({
-            message:"The cost of product can't be empty"
-        })
-        return;
-    }
-
+    
     const product={
         name: req.body.name,
         description: req.body.description,
-        cost: req.body.cost
+        cost: req.body.cost,
+        CategoryId: req.body.CategoryId
     }
 
     Product.create(product)
@@ -54,13 +41,41 @@ exports.findAll = (req,res)=>{
  
     let promise;
     let productName = req.query.name;
+    let minCost = req.query.minCost;
+    let maxCost = req.query.maxCost;
     if(productName){
         promise = Product.findAll({
             where:{
-                name:productname
+                name:productName
             }
         })
 
+    }else if(minCost && maxCost){
+        promise = Product.findAll({
+            where:{
+                cost:{
+                    [op.gte]:minCost,
+                    [op.lte]:maxCost
+                }
+            }
+        })
+
+    }else if(minCost){
+        promise= Product.findAll({
+            where:{
+                cost:{
+                    [op.gte]:minCost
+                }
+            }
+        })
+    }else if(maxCost){
+        promise=Product.findAll({
+            where:{
+                cost:{
+                    [op.lte]:maxCost
+                }
+            }
+        })
     }else{
         promise =Product.findAll();
     }

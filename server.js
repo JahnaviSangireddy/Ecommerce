@@ -15,7 +15,7 @@ const db = require("./models");
 const Category = db.category;
 const Product = db.product;
 
-//Category.hasMany(Product); //This will create foreign kay column categoryId in product table
+Category.hasMany(Product); //This will create foreign kay column categoryId in product table
 
 db.sequelize.sync({force:true})
 .then(()=>{
