@@ -20,4 +20,7 @@ module.exports= function(app){
     
     //route to delete a product based on Id
     app.delete("/ecom/api/v1/products/:id",productController.delete);
+
+    //route to get all products based on categoryId
+    app.get("/ecom/api/v1/categories/:categoryId/products",productController.getProductsBasedOnCategory)
 }
