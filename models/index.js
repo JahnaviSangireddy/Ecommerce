@@ -33,6 +33,8 @@ db.Sequelize = Sequelize;
 db.sequelize = seq;
 db.category = require('./category.model.js')(seq,Sequelize);
 db.product = require('./product.model.js')(seq,Sequelize);
+db.user= require('./user.model.js')(seq,Sequelize);
+db.role = require('./role.model.js')(seq,Sequelize);
 
 /**
  * now db object will have 3 attributes
@@ -41,5 +43,15 @@ db.product = require('./product.model.js')(seq,Sequelize);
  *  category->this is a call to function which returns the schema of Category
  * product-> this is a call to function which returns the schema of product
  */
+
+db.role.belongsToMany(db.user,{
+    through:"user_roles",
+    foreignKey:"roleId"
+});
+
+db.user.belongsToMany(db.role,{
+    through:"user_roles",
+    foreignKey:"userId"
+})
 
 module.exports=db;
