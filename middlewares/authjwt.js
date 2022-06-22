@@ -1,7 +1,8 @@
 const db = require("../models");
+const config = require("../configs/auth.configs");
 const User = db.user;
 var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+
 
 verifyToken = (req,res,next)=>{
 
