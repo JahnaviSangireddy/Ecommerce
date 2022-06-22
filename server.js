@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 const db = require("./models");
 const Category = db.category;
 const Product = db.product;
+const Role = db.role;
 
 Category.hasMany(Product); //This will create foreign kay column categoryId in product table
 
@@ -42,10 +43,22 @@ function init(){
         console.log("error while initialising category table");
     })
 
+    //Adding roles
+
+Role.create({
+    id: 1,
+    name:"User"
+})
+
+Role.create({
+    id:2,
+    name:"Admin"
+})
 }
 
 require("./routes/category.routes")(app);
 require("./routes/product.routes")(app);
+require("./routes/auth.routes")(app);
 
 app.listen(serverConfig.PORT,()=>{
     console.log(`Application started on port no : ${serverConfig.PORT}`);
